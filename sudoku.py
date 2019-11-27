@@ -24,47 +24,47 @@ def print_grid(grid):
 
 
 def check(g, col, row):
-    cur_digit = g[row][col]
+    digit = g[row][col]
 
     # Check in row
-    if g[row].count(cur_digit) > 1:
+    if g[row].count(digit) > 1:
         return False
 
     # Check in column
-    if [r[col] for r in g].count(cur_digit) > 1:
+    if [r[col] for r in g].count(digit) > 1:
         return False
 
     # Check in square
     sq_col, sq_row = 3 * (col // 3), 3 * (row // 3)
-    cur_sq = sum([r[sq_col:sq_col+3] for r in g[sq_row:sq_row+3]], [])
-    if cur_sq.count(cur_digit) > 1:
+    sq = sum([r[sq_col:sq_col+3] for r in g[sq_row:sq_row+3]], [])
+    if sq.count(digit) > 1:
         return False
 
     return True
 
 
 def solve(g):
-    empty_positions = []
+    empty_squares = []
     for i, r in enumerate(g):
-        empty_positions += [(j, i) for j, _ in filter(lambda d: d[1] == 0, enumerate(r))]
+        empty_squares += [(j, i) for j, _ in filter(lambda d: d[1] == 0, enumerate(r))]
 
-    cur_square_pointer = 0
+    cur_empty_sq = 0
 
     # Step through empty squares
-    while 0 <= cur_square_pointer < len(empty_positions):
+    while 0 <= cur_empty_sq < len(empty_squares):
 
         # Increment current square
-        col, row = empty_positions[cur_square_pointer]
+        col, row = empty_squares[cur_empty_sq]
         g[row][col] += 1
 
         # If 1-9 checked, reset and move back
         if g[row][col] > 9:
             g[row][col] = 0
-            cur_square_pointer -= 1
+            cur_empty_sq -= 1
 
         # Else move forward if current number checks out
         elif check(g, col, row):
-            cur_square_pointer += 1
+            cur_empty_sq += 1
 
 
 g = read_sudoku_file('sudoku.txt')
