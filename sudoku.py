@@ -7,20 +7,20 @@ def read_sudoku_file(sudoku_file):
     grid = []
     with open(sudoku_file) as f:
         for line in f.readlines():
-            for digit in line[:-1]:
-                grid.append(int(digit))
+            grid.append([int(d) for d in line[:-1]])
     return grid
 
 
 def print_grid(grid):
-    for i, d in enumerate(grid):
-        print(d if d else ' ', end=' ')
-        if i % 9 == 8:
-            print()
-            if ((i+1) % 27) == 0:
-                print('-'*21)
-        elif i % 3 == 2:
-            print('|', end=' ')
+    border = '+' + '-'*23 + '+'
+    print(border)
+    for i, r in enumerate(grid):
+        print('| ', end='')
+        for j, d in enumerate(r):
+            print(d if d else ' ', end=' | ' if j % 3 == 2 else ' ')
+        print()
+        if ((i + 1) % 3) == 0:
+            print(border)
 
 
 def check(g, index):
