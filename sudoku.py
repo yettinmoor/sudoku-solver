@@ -4,6 +4,18 @@ import time, os
 
 
 def read_sudoku_file(sudoku_file):
+    """
+    Ex. format:
+    002090005
+    000400008
+    408500060
+    040020000
+    503000701
+    000050080
+    060003809
+    200006000
+    700010400
+    """
     grid = []
     with open(sudoku_file) as f:
         for line in f.readlines():
@@ -44,6 +56,7 @@ def check(g, col, row):
 
 
 def solve(g):
+    # Create list of empty squares
     empty_squares = []
     for i, r in enumerate(g):
         empty_squares += [(j, i) for j, _ in filter(lambda d: d[1] == 0, enumerate(r))]
