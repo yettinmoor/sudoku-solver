@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import time, os
+import sys, time, os
 
 
 def read_sudoku_file(sudoku_file):
-    """
-    Ex. format:
+    """ Ex. format:
     002090005
     000400008
     408500060
@@ -80,6 +79,31 @@ def solve(g):
             cur_empty_sq += 1
 
 
-g = read_sudoku_file('sudoku.txt')
-solve(g)
-print_grid(g)
+def interactive_input():
+    ans = []
+    while len(ans) < 9:
+        try:
+            row = input(f'Row {len(ans)}>> ').strip()
+        except KeyboardInterrupt:
+            exit(1)
+
+        if not row.isdigit():
+            print('Invalid row: "{now}"')
+        else:
+            ans.append([int(d) for d in row])
+
+    return ans
+
+
+def main():
+    if len(sys.argv) == 1:
+        g = interactive_input()
+    else:
+        g = read_sudoku_file(sys.argv[1])
+
+    solve(g)
+    print_grid(g)
+
+
+if __name__ == '__main__':
+    main()
