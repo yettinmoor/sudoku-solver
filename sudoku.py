@@ -101,8 +101,12 @@ def main():
     else:
         g = read_sudoku_file(sys.argv[1])
 
+    t1 = time.time()
     solve(g)
+
+    t2 = time.time()
     print_grid(g)
+    print('Time to solve: {:.3}s'.format(t2 - t1))
 
 
 if __name__ == '__main__':
