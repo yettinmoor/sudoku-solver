@@ -88,7 +88,7 @@ def interactive_input():
             exit(1)
 
         if not row.isdigit() or len(row) != 9:
-            print(f'Invalid row: "{now}"')
+            print(f'Invalid row: "{row}"')
         else:
             ans.append([int(d) for d in row])
 
