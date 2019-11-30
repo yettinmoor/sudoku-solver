@@ -113,7 +113,9 @@ print_grid(int grid[9][9])
 
 void read_sudoku_file(int grid[9][9])
 {
-	FILE *fp = fopen("sudoku.txt", "r");
+	char filename[] = "sudoku.txt";
+	FILE *fp = fopen(filename, "r");
+
 	int i, j;
 	char c;
 
@@ -122,7 +124,10 @@ void read_sudoku_file(int grid[9][9])
 		if (c == '\n') {
 			j = 0;
 			++i;
-		}  else {
+		} else if (i > 8 || j > 8) {
+			perror("Error: %s is incorrectly formatted.\n");
+			exit(1);
+		} else {
 			grid[i][j++] = atoi(&c);
 		}
 	}
