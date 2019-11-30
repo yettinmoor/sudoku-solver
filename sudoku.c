@@ -10,26 +10,17 @@ struct Coord {
 
 int solve(int grid[9][9]);
 int check(int grid[9][9], struct Coord *c);
+void read_sudoku_file(int grid[9][9]);
 void print_grid(int grid[9][9]);
 
 int main(int argc, char **argv)
 {
+	int grid[9][9];
 	int solved;
 	clock_t t1, t2;
 
-	int grid[9][9] = {
-		{ 0, 0, 2, 0, 9, 0, 0, 0, 5 },
-		{ 0, 0, 0, 4, 0, 0, 0, 0, 8 },
-		{ 4, 0, 8, 5, 0, 0, 0, 6, 0 },
-		{ 0, 4, 0, 0, 2, 0, 0, 0, 0 },
-		{ 5, 0, 3, 0, 0, 0, 7, 0, 1 },
-		{ 0, 0, 0, 0, 5, 0, 0, 8, 0 },
-		{ 0, 6, 0, 0, 0, 3, 8, 0, 9 },
-		{ 2, 0, 0, 0, 0, 6, 0, 0, 0 },
-		{ 7, 0, 0, 0, 1, 0, 4, 0, 0 },
-	};
-
-	/* read_sudoku_file(grid); */
+	/* Read grid from sudoku.txt */
+	read_sudoku_file(grid);
 
 	t1 = clock();
 	solved = solve(grid);
@@ -60,10 +51,6 @@ solve(int grid[9][9])
 	}
 
 	cur_sq -= (n_empty_squares = cur_sq - empty_squares);
-
-	/* for (int i = 0; i < 9; i++) */
-	/* 	for (int j = 0; j < 9; j++) */
-	/* 		printf("%d\n", grid[i][j]); */
 
 	/* Step through empty squares until grid done or failure (first square fails 1-9) */
 	while (cur_sq >= empty_squares && cur_sq - empty_squares < n_empty_squares) {
@@ -117,7 +104,8 @@ check(int grid[9][9], struct Coord *c)
 }
 
 
-void print_grid(int grid[9][9])
+void
+print_grid(int grid[9][9])
 {
 	char hl[] = "+-------+-------+-------+\n";
 	for (int i = 0; i < 9; i++) {
@@ -128,4 +116,22 @@ void print_grid(int grid[9][9])
 		printf("|\n");
 	}
 	printf(hl);
+}
+
+
+void read_sudoku_file(int grid[9][9])
+{
+	FILE *fp = fopen("sudoku.txt", "r");
+	int i, j;
+	char c;
+
+	i = j = 0;
+	while ((c = fgetc(fp)) != EOF) {
+		if (c == '\n') {
+			j = 0;
+			++i;
+		} else {
+			grid[i][j++] = atoi(&c);
+		}
+	}
 }
