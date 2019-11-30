@@ -3,12 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 int solve(int grid[9][9]);
 int check(int grid[9][9], int col, int row);
 void read_sudoku_file(int grid[9][9]);
 void print_grid(int grid[9][9]);
-
 
 int main(int argc, char **argv)
 {
@@ -27,7 +25,6 @@ int main(int argc, char **argv)
 	printf("%s\n", solved ? "Success!" : "Fail :-(");
 	printf("Time: %.4fms\n", ((double) (t2 - t1)) / CLOCKS_PER_SEC);
 }
-
 
 int
 solve(int grid[9][9])
@@ -56,20 +53,16 @@ solve(int grid[9][9])
 	/* Step through empty squares until grid done (last square checks out) or failure (first square fails 1-9) */
 	while (cur_sq >= empty_squares && cur_sq - empty_squares < n_empty_squares) {
 
-		/* If 1-9 checked, reset current square and hop back */
-		if (++grid[cur_sq->row][cur_sq->col] > 9) {
+		if (++grid[cur_sq->row][cur_sq->col] > 9) { /* If 1-9 checked, reset current square and hop back */
 			grid[cur_sq->row][cur_sq->col] = 0;
 			--cur_sq;
-
-		/* Else if current value checks out, hop forward */
-		} else if (check(grid, cur_sq->col, cur_sq->row)) {
+		} else if (check(grid, cur_sq->col, cur_sq->row)) { /* Else if current value checks out, hop forward */
 			++cur_sq;
 		}
 	}
 
 	return (cur_sq >= empty_squares);
 }
-
 
 int
 check(int grid[9][9], int col, int row)
@@ -104,7 +97,6 @@ check(int grid[9][9], int col, int row)
 	return 1;
 }
 
-
 void
 print_grid(int grid[9][9])
 {
@@ -119,7 +111,6 @@ print_grid(int grid[9][9])
 	printf(hl);
 }
 
-
 void read_sudoku_file(int grid[9][9])
 {
 	FILE *fp = fopen("sudoku.txt", "r");
@@ -131,7 +122,7 @@ void read_sudoku_file(int grid[9][9])
 		if (c == '\n') {
 			j = 0;
 			++i;
-		} else {
+		}  else {
 			grid[i][j++] = atoi(&c);
 		}
 	}
