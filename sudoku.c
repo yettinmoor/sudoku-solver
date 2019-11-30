@@ -3,15 +3,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-struct Coord {
-	int col;
-	int row;
-};
 
 int solve(int grid[9][9]);
-int check(int grid[9][9], struct Coord *c);
+int check(int grid[9][9], int col, int row);
 void read_sudoku_file(int grid[9][9]);
 void print_grid(int grid[9][9]);
+
 
 int main(int argc, char **argv)
 {
@@ -35,7 +32,11 @@ int main(int argc, char **argv)
 int
 solve(int grid[9][9])
 {
-	struct Coord *cur_sq, *empty_squares;
+	struct {
+		int col;
+		int row;
+	} *cur_sq, *empty_squares;
+
 	ptrdiff_t n_empty_squares;
 
 	cur_sq = empty_squares = malloc(81 * sizeof(*empty_squares));
@@ -52,7 +53,7 @@ solve(int grid[9][9])
 
 	cur_sq -= (n_empty_squares = cur_sq - empty_squares);
 
-	/* Step through empty squares until grid done or failure (first square fails 1-9) */
+	/* Step through empty squares until grid done (last square checks out) or failure (first square fails 1-9) */
 	while (cur_sq >= empty_squares && cur_sq - empty_squares < n_empty_squares) {
 
 		/* If 1-9 checked, reset current square and hop back */
@@ -61,7 +62,7 @@ solve(int grid[9][9])
 			--cur_sq;
 
 		/* Else if current value checks out, hop forward */
-		} else if (check(grid, cur_sq)) {
+		} else if (check(grid, cur_sq->col, cur_sq->row)) {
 			++cur_sq;
 		}
 	}
@@ -71,28 +72,28 @@ solve(int grid[9][9])
 
 
 int
-check(int grid[9][9], struct Coord *c)
+check(int grid[9][9], int col, int row)
 {
 	int d, n;
-	d = grid[c->row][c->col];
+	d = grid[row][col];
 
 	/* Check row */
 	n = 0;
 	for (int i = 0; i < 9; i++)
-		n += (grid[c->row][i] == d);
+		n += (grid[row][i] == d);
 	if (n > 1)
 		return 0;
 
 	/* Check column */
 	n = 0;
 	for (int j = 0; j < 9; j++)
-		n += (grid[j][c->col] == d);
+		n += (grid[j][col] == d);
 	if (n > 1)
 		return 0;
 
 	/* Check square */
-	int sq_col = 3 * (c->col / 3);
-	int sq_row = 3 * (c->row / 3);
+	int sq_col = 3 * (col / 3);
+	int sq_row = 3 * (row / 3);
 	n = 0;
 	for (int i = sq_row; i < sq_row + 3; i++)
 		for (int j = sq_col; j < sq_col + 3; j++)
