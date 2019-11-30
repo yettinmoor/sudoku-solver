@@ -4,22 +4,8 @@ import sys, time, os
 
 
 def read_sudoku_file(sudoku_file):
-    """ Ex. format:
-    002090005
-    000400008
-    408500060
-    040020000
-    503000701
-    000050080
-    060003809
-    200006000
-    700010400
-    """
-    grid = []
     with open(sudoku_file) as f:
-        for line in f.readlines():
-            grid.append([int(d) for d in line[:-1]])
-    return grid
+        return [[int(d) for d in line.rstrip()] for line in f.readlines()]
 
 
 def print_grid(grid):
