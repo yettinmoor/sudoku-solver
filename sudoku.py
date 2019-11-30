@@ -47,8 +47,8 @@ def check(g, col, row):
 
     # Check in square
     sq_col, sq_row = 3 * (col // 3), 3 * (row // 3)
-    sq = sum([r[sq_col:sq_col+3] for r in g[sq_row:sq_row+3]], [])
-    if sq.count(digit) > 1:
+    sq_sum = sum([r[sq_col:sq_col+3].count(digit) for r in g[sq_row:sq_row+3]])
+    if sq_sum > 1:
         return False
 
     return True
