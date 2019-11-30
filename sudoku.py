@@ -55,11 +55,15 @@ def check(g, col, row):
 
 
 def solve(g):
+    # g = 2d list representing a sudoku grid
+    # Empty squares are 0
+
     # Create list of empty squares
     empty_squares = []
     for i, r in enumerate(g):
-        empty_squares += [(j, i) for j, _ in filter(lambda d: d[1] == 0, enumerate(r))]
+        empty_squares += [(j, i) for j, d in enumerate(r) if d == 0]
 
+    # Current index into empty_squares list
     cur_empty_sq = 0
 
     # Step through empty squares
@@ -80,19 +84,19 @@ def solve(g):
 
 
 def interactive_input():
-    ans = []
-    while len(ans) < 9:
+    g = []
+    while len(g) < 9:
         try:
-            row = input(f'Row {len(ans) + 1}>> ').strip()
+            row = input(f'Row {len(g) + 1}>> ').strip()
         except KeyboardInterrupt:
             exit(1)
 
         if not row.isdigit() or len(row) != 9:
             print(f'Invalid row: "{row}"')
         else:
-            ans.append([int(d) for d in row])
+            g.append([int(d) for d in row])
 
-    return ans
+    return g
 
 
 def main():
