@@ -23,15 +23,10 @@ def read_sudoku_file(sudoku_file):
 
 
 def print_grid(grid):
-    border = '+' + '-'*23 + '+'
-    print(border)
+    hl = '+-------' * 3 + '+\n'
     for i, r in enumerate(grid):
-        print('| ', end='')
-        for j, d in enumerate(r):
-            print(d if d else ' ', end=' | ' if j % 3 == 2 else ' ')
-        print()
-        if ((i + 1) % 3) == 0:
-            print(border)
+        print((hl if i % 3 == 0 else '') + (3 * '| {} {} {} ').format(*r) + '|')
+    print(hl.rstrip())
 
 
 def check(g, col, row):
@@ -109,8 +104,8 @@ def main():
 
     t1 = time.time()
     solve(g)
-
     t2 = time.time()
+
     print_grid(g)
     print('Time to solve: {:.3}s'.format(t2 - t1))
 
