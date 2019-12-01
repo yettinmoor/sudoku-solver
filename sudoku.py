@@ -16,8 +16,13 @@ def print_grid(grid):
 
 
 def interactive_input():
-    print('Please input nine 9-digit rows representing your grid.',
-            'Mark empty squares as 0.')
+    instructions = [
+            'Please input nine 9-digit rows representing your grid.',
+            'Mark empty squares as 0.',
+            'Delete mistaken rows by typing "d".',
+            '',
+    ]
+    print('\n'.join(instructions))
 
     g = []
     while len(g) < 9:
@@ -26,7 +31,10 @@ def interactive_input():
         except KeyboardInterrupt:
             exit(1)
 
-        if not row.isdigit() or len(row) != 9:
+        if row == 'd' and len(g) > 0:
+            g.pop()
+            print(f'Row {len(g) + 1} removed.')
+        elif not row.isdigit() or len(row) != 9:
             print(f'Invalid row: "{row}"')
         else:
             g.append([int(d) for d in row])
