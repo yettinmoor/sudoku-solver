@@ -62,12 +62,15 @@ solve(int grid[9][9])
 	/* Step through empty squares until grid done (last square checks out) or failure (first square fails 1-9) */
 	while (cur_sq >= empty_squares && cur_sq - empty_squares < n_empty_squares) {
 
-		if (++grid[cur_sq->row][cur_sq->col] > 9) { /* If 1-9 checked, reset current square and hop back */
+		/* If 1-9 checked, reset current square and hop back */
+		if (++grid[cur_sq->row][cur_sq->col] > 9) {
 			grid[cur_sq->row][cur_sq->col] = 0;
 			--cur_sq;
-		} else if (check(grid, cur_sq->col, cur_sq->row)) { /* Else if current value checks out, hop forward */
-			++cur_sq;
 		}
+
+		/* Else if current value checks out, hop forward */
+		else if (check(grid, cur_sq->col, cur_sq->row))
+			++cur_sq;
 	}
 
 	return (cur_sq >= empty_squares);
