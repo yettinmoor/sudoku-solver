@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, time, os
+import sys, time, os, ctypes
 
 
 def read_sudoku_file(sudoku_file):
@@ -89,8 +89,10 @@ def main():
     else:
         g = read_sudoku_file(sys.argv[1])
 
+    libsudoku = ctypes.CDLL('./libsudoku.so')
+
     t1 = time.time()
-    solve(g)
+    libsudoku.solve(g)
     t2 = time.time()
 
     print_grid(g)
