@@ -65,7 +65,8 @@ def solve(g):
 
 
 def interactive_input():
-    print('Please input nine 9-digit rows representing your grid. Mark empty squares as 0.')
+    print('Please input nine 9-digit rows representing your grid.',
+            'Mark empty squares as 0.')
 
     g = []
     while len(g) < 9:
