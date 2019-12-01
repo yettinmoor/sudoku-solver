@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, time, os, ctypes
+import sys, time, ctypes
 
 
 def read_sudoku_file(sudoku_file):
