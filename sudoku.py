@@ -15,55 +15,6 @@ def print_grid(grid):
     print(hl.rstrip())
 
 
-def check(g, col, row):
-    digit = g[row][col]
-
-    # Check in row
-    if g[row].count(digit) > 1:
-        return False
-
-    # Check in column
-    if [r[col] for r in g].count(digit) > 1:
-        return False
-
-    # Check in square
-    sq_col, sq_row = 3 * (col // 3), 3 * (row // 3)
-    sq_sum = sum([r[sq_col:sq_col+3].count(digit) for r in g[sq_row:sq_row+3]])
-    if sq_sum > 1:
-        return False
-
-    return True
-
-
-def solve(g):
-    # g = 2d list representing a sudoku grid
-    # Empty squares are 0
-
-    # Create list of empty squares
-    empty_squares = []
-    for i, r in enumerate(g):
-        empty_squares += [(j, i) for j, d in enumerate(r) if d == 0]
-
-    # Current index into empty_squares list
-    cur_empty_sq = 0
-
-    # Step through empty squares
-    while 0 <= cur_empty_sq < len(empty_squares):
-
-        # Increment current square
-        col, row = empty_squares[cur_empty_sq]
-        g[row][col] += 1
-
-        # If 1-9 checked, reset and move back
-        if g[row][col] > 9:
-            g[row][col] = 0
-            cur_empty_sq -= 1
-
-        # Else move forward if current number checks out
-        elif check(g, col, row):
-            cur_empty_sq += 1
-
-
 def interactive_input():
     print('Please input nine 9-digit rows representing your grid.',
             'Mark empty squares as 0.')
@@ -91,9 +42,17 @@ def main():
 
     libsudoku = ctypes.CDLL('./libsudoku.so')
 
+    # Convert grid to C int[9][9]
+    c_grid_t = (ctypes.c_int * 9) * 9
+    c_grid = c_grid_t(*[(ctypes.c_int * 9)(*r) for r in g])
+    libsudoku.solve.argtypes = [c_grid_t]
+
     t1 = time.time()
-    libsudoku.solve(g)
+    libsudoku.solve(c_grid)
     t2 = time.time()
+
+    # Recovert c_grid to 2D Python list
+    g = [[d for d in c_row] for c_row in c_grid]
 
     print_grid(g)
     print('Time to solve: {:.3}s'.format(t2 - t1))

@@ -5,7 +5,7 @@
 #include "solve.h"
 
 int
-check(int **grid, int col, int row)
+check(int grid[9][9], int col, int row)
 {
 	int d, n;
 	d = grid[row][col];
@@ -38,7 +38,7 @@ check(int **grid, int col, int row)
 }
 
 int
-solve(int **grid)
+solve(int grid[9][9])
 {
 	struct {
 		int col;

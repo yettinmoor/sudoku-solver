@@ -1,1 +1,1 @@
-int solve(int **grid);
+int solve(int grid[9][9]);
