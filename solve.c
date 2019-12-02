@@ -59,7 +59,9 @@ solve(int grid[9][9])
 
 	cur_sq -= (n_empty_squares = cur_sq - empty_squares);
 
-	/* Step through empty squares until grid done (last square checks out) or failure (first square fails 1-9) */
+	/* Step through empty squares until:
+	 * grid done (last square checks out),
+	 * or failure (first square fails 1-9) */
 	while (cur_sq >= empty_squares && cur_sq - empty_squares < n_empty_squares) {
 
 		/* If 1-9 checked, reset current square and hop back */
